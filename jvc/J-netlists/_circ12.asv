@@ -1,0 +1,20 @@
+% net=cho_load('_circ12.m');[q,k]=cho_dc(net);figure(1);cho_display(net,q);
+
+uses mumps.net
+anchor   p1 [d]  [l=10u w=2u h=2u oz=-pi/2]
+
+W = 10u
+H = 2u
+R = 100u
+circbeam12 p1 [d b2][w=W h=H radius=R alpha=pi/4 ] 
+
+theta=(pi/4)/3
+R=100u 
+oz=pi
+
+oz=0*pi/2
+ox=0
+oy=-pi/2
+f=1000u
+
+%f3d * [b]  [F=f oz=oz ox=ox oy=oy] 

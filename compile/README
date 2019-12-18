@@ -1,0 +1,171 @@
+Use
+---
+
+To compile, start up Matlab and type
+  makemex
+at the prompt.  If you are running Unix, you can also change CC to
+point to your version of mex and type "make mex" at the shell.
+
+You can then type things like
+
+  net = sugar_c('mattmirror.net');
+
+or
+
+  params.V = 5;
+  net = sugar_c('foo.net', params);
+
+and get a netlist data structure.
+
+
+Overview
+--------
+
+This directory contains the in-progress update to the netlist compiler.
+It is substantially more complicated than the old compiler, but I think
+the structure is simpler and cleaner.  Most of the additional complexity 
+comes from the fact that the new compiler does more.
+
+The new compiler keeps two levels of intermediate representation, not
+including the Matlab structure which is output either directly (using
+the MEX file interface) or to a .m script.  The first intermediate
+representation of the netlist is a syntax tree which nearly directly
+corresponds to the original netlist structure.  The syntax tree nodes
+are described in parse.h.  Construction of the syntax tree is the
+responsibility of sugar.y (the Bison parser) and parse.c.  Tasks like
+variable name lookup are also handled while building the syntax tree.
+
+The high-level syntax tree representation is converted into a lower-level
+intermediate format by codegen.[ch], codestack.[ch], and evalexpr.[ch].
+These modules effectively serve as an interpreter for the syntax tree:
+they evaluate expressions, iterate loops, and so forth.  The output of the
+process is a data structure described in codegen.h.  It consists of tables
+of element descriptions and node descriptions, each with pointers to the 
+other.  This representation is quite similar to the netlist data structure
+used in Matlab.
+
+There is some additional postprocessing done on this low-level structure
+before it is converted into Matlab structures by codemx.c (or codeprint.c).
+Currently, the additional processing determines node positions.  I hope
+that soon there will be steps to assign variable mappings and check the 
+netlist structure, too.  Ultimately, I would like it to be possible to run
+SUGAR without Matlab if desired.
+
+
+Changes from the previous version
+---------------------------------
+
+Besides obvious structural changes, the new netlist compiler has some
+additional capabilities.  Perhaps most noticeable to the user would be
+the re-inclusion of string arguments.  I hope to use these not only for
+specifying voltage functions and the like for use in transient analysis,
+but also to specify continuation paths for quasi-static analysis.
+
+More subtle is the treatment of process parameters during subnet 
+instantiation.  In the previous version of the compiler, subnet arguments
+were first bound to the user value, and if that was not specified they were
+bound to a default.  If there was no default, the compiler issued an
+error diagnostic.  In the new version, the compiler checks process 
+parameters if there is neither a user-specified argument nor a default.
+In this way, subnets look even a bit more to the user like ordinary
+models.
+
+The previous version of the compiler used static activation records, a la
+Fortran; the current version uses a stack.  While the netlist language was
+not designed for recursion (though it is possible through clever use of
+the for construct), using a stack for storing subnet activation information
+simplified the code.
+
+The previous version of the compiler output a .m script to produce the 
+desired data structure, rather than producing it directly.  The new version
+directly produces Matlab data structures.  While doing the basic processing
+necessary to construct the data structures, the new code also handles
+a variety of other intermediate steps: it computes the final rotations,
+determines node positions, constructs cross-references between the node
+table and the element table, and merges process information into the
+parameter lists.
+
+The node positioning routine actually calls the Matlab model functions
+to retrieve relative position information.  Similarly, the variable index
+assignment routines call the Matlab model functions, and ordinary functions
+used in netlist expressions cause calls to the corresponding Matlab function
+if no existing function code is already available in C.  I continue to work
+to make other Matlab model function cases accessible from the C code, with the
+ultimate goal of providing a unified interface by which models can be
+developed in Matlab, C, or Fortran.
+
+There have also been a few additions to the syntax.  In particular, I have
+added comparison operators, logical operators (&, |, and !), and two forms
+of conditional.  The if statement has the form
+
+  if expr
+    % code
+
+or
+
+  if expr
+    % code
+  else 
+    % other code
+
+The dangling else problem is handled in the usual way; that is, 
+
+  if x
+    if y
+      % code 1
+    else
+      % code 2
+
+is interpreted as the indentation above indicates (the else attaches to
+the innermost if).  Besides if, there is an operator called cond:
+
+  cond(expr1, expr2, expr3) == expr2 if expr1 is nonzero
+                            == expr3 if expr1 is zero
+
+My intention in adding conditionals is to make it possible to write more
+sophisticated subnets.  The new netlist language is indeed Turing complete, and
+you can even write things like recursive subnets if you have a particularly
+perverse turn of mind.  This is not meant as an invitation to misuse the
+language, though I'm sure the language will be misused.  Please use Matlab
+when appropriate.
+
+
+Files
+-----
+
+Driver:
+  sugar_c.c  -- Top level routine
+
+Parsing:
+  sugar.lex  -- Netlist tokenizer + include stack management + 
+                error reporting
+  sugar.y    -- Netlist parser.  Most of the actual work of constructing
+                the intermediate representation is done in support code
+                in parse.c
+  parse.[ch]   -- Type definitions and constructors for intermediate rep
+
+Generate low level representation:
+  codegen.[ch] -- Code generation from intermediate representation
+  codestack.[ch] -- Manage "run-time" stack for final code generation
+  evalexpr.[ch] -- Expression evaluation
+
+Additional processing on low level representation:
+  position.[ch] -- Determine node positions.  Relies on callbacks to the
+                   Matlab model functions.
+  varassign.[ch] -- Determine indices of global variables.
+
+Output:
+  codemx.[ch] -- Directly generate Matlab structures
+  codeprint.[ch] -- Print a .m file to generate Matlab structures
+  xtnetdraw.[ch] -- Only relevant when compiling a standalone executable.
+                    Does a crude drawing of the (undisplaced) device using
+                    the X toolkit.
+
+Utilities:
+  sugar-lib.h -- Common macro redefinitions, so that mxPrintf, mxMalloc,
+                 and mxFree when the source will be compiled into a MEX
+                 file.
+  mempool.[ch] -- Simple arena-style block memory allocator
+  shash.[ch]   -- String-keyed hash table
+  symbol.[ch]  -- Scoped symbol table
+

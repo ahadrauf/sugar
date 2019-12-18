@@ -1,0 +1,85 @@
+%Bio muscle cell
+    cell_force = 5.7e-6; %N
+%    Length = 67 um
+    cell_area = 26e-6 * 26e-6;
+%    Muscle cell contraction pressure = 8,431 Pa 
+    pressure_muscle_cell = cell_force / cell_area
+
+%Piezo s-drive cell (PVDF)
+%    Force = 43 uN at 40V
+%    Length = 8 um
+    cross_sectional_area = 2e-6 * 200e-6;
+%    Pressure = 107,500 Pa 
+    k = 0.01; %N/m
+    force_0p15percent = k * 0.15e-6
+    pressure = force_0p15percent / cross_sectional_area 
+    
+%Composite of thickness 4.3um
+%    - First layer thickness is 2um of PZT-5H, second layer is 2.3um of Silicon (170GPa)
+%    - Note: the 2.3um layer of Silicon represents (2um Si + 0.2um Pt + 0.1um SiO2)
+%    - The length is 200um, all widths are 2um 
+%    - The lateral stiffness is 2.36N/m
+%    - At 40V, displacement is 3.1um
+%    - Equivalent force is 7.3uN
+
+%Estimating PVDF of thckness 2um
+%    - For elasticity, I multiplied the PZT elasticity matrix by 1/30 
+%    - For piezo constant, I multiplied the coupling matrix by 1/10
+%    - The layer thickness is 2um, length is 200um
+%    - The lateral stiffness is 0.0082N/m
+%    - At 40V, displacement is 52.9um
+%    - Equivalent force is 43.3uN
+
+%PZT of thickness 2um
+%    - The layer thickness is 2um, length is 200um
+%    - The lateral stiffness is 0.28N/m
+%    - At 40V, displacement is 23.2um
+%    - Equivalent force is 6.5uN
+ 
+f = 0.28 * 6.5e-6
+p = f / cross_sectional_area
+
+f = 0.01 * 7e-6
+p = f / cross_sectional_area
+
+x = 1e-6; f=0.01e-6; k = f/x;
+x = 2.5e-8; ff=0.01e-6; xf=6.5e-9; k = ff/xf
+f=k*x; p = f / cross_sectional_area
+
+xf=2.445e-9; ff=0.01e-6; k=ff/xf; x=1.175e-6;
+f=k*x; p = f / cross_sectional_area
+'**********************************************'
+'------cell', cell_force = 5.7e-6; cell_area = 26e-6 * 26e-6; p = cell_force / cell_area
+rho=1780; cube=(1e-2)^3; m=rho*cube; 
+Length = 67e-6; cell_area = 26e-6 * 26e-6;
+nz=(0.5e-2)/Length ; kz1=1/(nz*1/k); nxy=(1e-2)^2/cell_area; k=nxy*kz1; xz=nz*x;
+v2=k*xz^2/m; g=9.8;  h=v2/2/g
+nz=(0.5e-2)/(42e-6); kz1=nz*k;       nxy=(1e-2)^2/(200e-6*2e-6); k=nxy*kz1; xz=x;
+v2=k*xz^2/m; g=9.8;  h=v2/2/g
+
+
+
+'------pvdf L200 w20',ff=0.01e-6; xf=1.289e-9;  k=ff/xf; x=1.125e-6, cs=200e-6*2e-6; p=x*k/cs %p=21819
+rho=1780; cube=(1e-2)^3; m=rho*cube; 
+nz=(0.5e-2)/(42e-6); kz1=1/(nz*1/k); nxy=(1e-2)^2/(200e-6*2e-6); k=nxy*kz1; xz=nz*x;
+v2=k*xz^2/m; g=9.8;  h=v2/2/g
+nz=(0.5e-2)/(42e-6); kz1=nz*k;       nxy=(1e-2)^2/(200e-6*2e-6); k=nxy*kz1; xz=x;
+v2=k*xz^2/m; g=9.8;  h=v2/2/g
+'------pvdf L200 w2', ff=0.01e-6; xf=1.229e-6;  k=ff/xf; x=1.080e-5, cs=200e-6*2e-6; p=x*k/cs %p=  219
+rho=1780; cube=(1e-2)^3; m=rho*cube; 
+nz=(0.5e-2)/(4e-6); kz1=1/(nz*1/k); nxy=(1e-2)^2/(200e-6*2e-6); k=nxy*kz1; xz=nz*x;
+v2=k*xz^2/m; g=9.8;  h=v2/2/g
+nz=(0.5e-2)/(4e-6); kz1=nz*k;       nxy=(1e-2)^2/(200e-6*2e-6); k=nxy*kz1; xz=x;
+v2=k*xz^2/m; g=9.8;  h=v2/2/g
+'------pvdf L200 w40',ff=0.01e-6; xf=1.823e-10; k=ff/xf; x=6.062e-7, cs=200e-6*2e-6; p=x*k/cs %p=83132
+rho=1780; cube=(1e-2)^3; m=rho*cube 
+nz=(0.5e-2)/(82e-6); kz1=1/(nz*1/k); nxy=(1e-2)^2/(200e-6*2e-6); k=nxy*kz1; xz=nz*x;
+v2=k*xz^2/m; g=9.8;  h=v2/2/g
+nz=(0.5e-2)/(82e-6); kz1=nz*k;       nxy=(1e-2)^2/(200e-6*2e-6); k=nxy*kz1; xz=x;
+v2=k*xz^2/m; g=9.8;  h=v2/2/g
+
+'------pvdf axial', ff=0.5e-6; xf=6.162e-10; kf=ff/xf; xv=3.019e-7; p=xv*kf/cs
+rho=1780; cube=(1e-2)^3; m=rho*cube 
+nz=(0.5e-2)/(200e-6); kz1=nz*kf;       nxy=(1e-2)^2/(80e-6*2e-6); k=nxy*kz1; xz=xv;
+v2=k*xz^2/m; g=9.8;  h=v2/2/g
+

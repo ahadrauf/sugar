@@ -1,0 +1,71 @@
+L=100e-6;w=2e-6;h=2e-6;E=160e9;I=w^3*h/12;
+L3EI3=L^3/E/I/3;L2EI2=L^2/E/I/2;
+
+j=0;i=0;i=i+1;
+j=j+1;T(i,j)=00*60+47;nodes(i,j)=118;meshing(i,j)=50e-6;Fy(i,j)=25e-6;Dxt(i,j)=-2.7408e-6;Dxb(i,j)=4.48483e-6;Dyt(i,j)=19.505e-6;Dyb(i,j)=20.7249e-6;
+j=j+1;T(i,j)=01*60+08;nodes(i,j)=118;meshing(i,j)=50e-6;Fy(i,j)=50e-6;Dxt(i,j)=-5.21497e-6;Dxb(i,j)=4.88313e-6;Dyt(i,j)=27.1164e-6;Dyb(i,j)=29.5698e-6;
+j=j+1;T(i,j)=01*60+18;nodes(i,j)=118;meshing(i,j)=50e-6;Fy(i,j)=100e-6;Dxt(i,j)=-9.12261e-6;Dxb(i,j)=4.07937e-6;Dyt(i,j)=35.8581e-6;Dyb(i,j)=40.2577e-6;
+j=j+1;T(i,j)=01*60+37;nodes(i,j)=118;meshing(i,j)=50e-6;Fy(i,j)=200e-6;Dxt(i,j)=-15.0132e-6;Dxb(i,j)=1.30507e-6;Dyt(i,j)=45.6466e-6;Dyb(i,j)=52.8883e-6;
+j=j+1;T(i,j)=01*60+53;nodes(i,j)=118;meshing(i,j)=50e-6;Fy(i,j)=400e-6;Dxt(i,j)=-23.401e-6;Dxb(i,j)=-4.33166e-6;Dyt(i,j)=56.0862e-6;Dyb(i,j)=67.1278e-6;
+j=0;i=i+1;
+j=j+1;T(i,j)=00*60+45;nodes(i,j)=142;meshing(i,j)=25e-6;Fy(i,j)=25e-6;Dxt(i,j)=-6.22192e-6;Dxb(i,j)=3.87647e-6;Dyt(i,j)=30.2234e-6;Dyb(i,j)=32.6777e-6;
+j=j+1;T(i,j)=01*60+04;nodes(i,j)=142;meshing(i,j)=25e-6;Fy(i,j)=50e-6;Dxt(i,j)=-14.0583e-6;Dxb(i,j)=0.751441e-6;Dyt(i,j)=44.7474e-6;Dyb(i,j)=50.478e-6;
+j=j+1;T(i,j)=01*60+45;nodes(i,j)=142;meshing(i,j)=25e-6;Fy(i,j)=100e-6;Dxt(i,j)=-25.3013e-6;Dxb(i,j)=-6.63581e-6;Dyt(i,j)=58.0675e-6;Dyb(i,j)=68.4217e-6;
+j=j+1;T(i,j)=02*60+13;nodes(i,j)=142;meshing(i,j)=25e-6;Fy(i,j)=200e-6;Dxt(i,j)=-38.1037e-6;Dxb(i,j)=-17.1981e-6;Dyt(i,j)=68.3791e-6;Dyb(i,j)=83.5262e-6;
+j=j+1;T(i,j)=02*60+29;nodes(i,j)=142;meshing(i,j)=25e-6;Fy(i,j)=400e-6;Dxt(i,j)=-50.3839e-6;Dxb(i,j)=-28.6284e-6;Dyt(i,j)=75.7017e-6;Dyb(i,j)=94.4379e-6;
+j=0;i=i+1;
+j=j+1;T(i,j)=00*60+53;nodes(i,j)=202;meshing(i,j)=12.5e-6;Fy(i,j)=25e-6;Dxt(i,j)=-7.64036e-6;Dxb(i,j)=3.27128e-6;Dyt(i,j)=33.7155e-6;Dyb(i,j)=36.6118e-6;
+j=j+1;T(i,j)=01*60+15;nodes(i,j)=202;meshing(i,j)=12.5e-6;Fy(i,j)=50e-6;Dxt(i,j)=-19.2721e-6;Dxb(i,j)=-2.89229e-6;Dyt(i,j)=52.3043e-6;Dyb(i,j)=59.6169e-6;
+j=j+1;T(i,j)=02*60+02;nodes(i,j)=202;meshing(i,j)=12.5e-6;Fy(i,j)=100e-6;Dxt(i,j)=-35.6847e-6;Dxb(i,j)=-15.586e-6;Dyt(i,j)=67.8515e-6;Dyb(i,j)=80.9042e-6;
+j=j+1;T(i,j)=02*60+22;nodes(i,j)=202;meshing(i,j)=12.5e-6;Fy(i,j)=200e-6;Dxt(i,j)=-51.6428e-6;Dxb(i,j)=-30.0787e-6;Dyt(i,j)=77.685e-6;Dyb(i,j)=95.3286e-6;
+j=j+1;T(i,j)=02*60+59;nodes(i,j)=202;meshing(i,j)=12.5e-6;Fy(i,j)=400e-6;Dxt(i,j)=-64.2429e-6;Dxb(i,j)=-42.3358e-6;Dyt(i,j)=83.6393e-6;Dyb(i,j)=103.635e-6;
+j=0;i=i+1;
+j=j+1;T(i,j)=01*60+04;nodes(i,j)=322;meshing(i,j)=6.25e-6;Fy(i,j)=25e-6;Dxt(i,j)=-7.80958e-6;Dxb(i,j)=3.18133e-6;Dyt(i,j)=34.1232e-6;Dyb(i,j)=37.065e-6;
+j=j+1;T(i,j)=01*60+27;nodes(i,j)=322;meshing(i,j)=6.25e-6;Fy(i,j)=50e-6;Dxt(i,j)=-20.0247e-6;Dxb(i,j)=-3.47055e-6;Dyt(i,j)=53.3341e-6;Dyb(i,j)=60.8435e-6;
+j=j+1;T(i,j)=02*60+29;nodes(i,j)=322;meshing(i,j)=6.25e-6;Fy(i,j)=100e-6;Dxt(i,j)=-37.4526e-6;Dxb(i,j)=-17.1977e-6;Dyt(i,j)=69.4354e-6;Dyb(i,j)=82.8477e-6;
+j=j+1;T(i,j)=03*60+05;nodes(i,j)=322;meshing(i,j)=6.25e-6;Fy(i,j)=200e-6;Dxt(i,j)=-54.2771e-6;Dxb(i,j)=-32.6517e-6;Dyt(i,j)=79.5287e-6;Dyb(i,j)=97.4875e-6;
+j=j+1;T(i,j)=03*60+45;nodes(i,j)=322;meshing(i,j)=6.25e-6;Fy(i,j)=400e-6;Dxt(i,j)=-67.3914e-6;Dxb(i,j)=-45.4717e-6;Dyt(i,j)=85.6227e-6;Dyb(i,j)=105.76e-6;
+j=0;i=i+1;
+j=j+1;T(i,j)=01*60+48;nodes(i,j)=603;meshing(i,j)=3.125e-6;Fy(i,j)=25e-6;Dxt(i,j)=-7.85456e-6;Dxb(i,j)=3.15771e-6;Dyt(i,j)=34.242e-6;Dyb(i,j)=37.1962e-6;
+j=j+1;T(i,j)=02*60+35;nodes(i,j)=603;meshing(i,j)=3.125e-6;Fy(i,j)=50e-6;Dxt(i,j)=-20.1467e-6;Dxb(i,j)=-3.5666e-6;Dyt(i,j)=53.5205e-6;Dyb(i,j)=61.0596e-6;
+j=j+1;T(i,j)=04*60+19;nodes(i,j)=603;meshing(i,j)=3.125e-6;Fy(i,j)=100e-6;Dxt(i,j)=-37.6823e-6;Dxb(i,j)=-17.41e-6;Dyt(i,j)=69.6714e-6;Dyb(i,j)=83.1249e-6;
+j=j+1;T(i,j)=05*60+14;nodes(i,j)=603;meshing(i,j)=3.125e-6;Fy(i,j)=200e-6;Dxt(i,j)=-54.6063e-6;Dxb(i,j)=-32.9749e-6;Dyt(i,j)=79.8016e-6;Dyb(i,j)=97.7927e-6;
+j=j+1;T(i,j)=06*60+15;nodes(i,j)=603;meshing(i,j)=3.125e-6;Fy(i,j)=400e-6;Dxt(i,j)=-67.8134e-6;Dxb(i,j)=-45.8926e-6;Dyt(i,j)=85.9434e-6;Dyb(i,j)=106.094e-6;
+j=0;i=i+1;
+j=j+1;T(i,j)=11*60+55;nodes(i,j)=2936;meshing(i,j)=1.5625e-6;Fy(i,j)=25e-6;Dxt(i,j)=-7.90856e-6;Dxb(i,j)=3.13107e-6;Dyt(i,j)=34.3883e-6;Dyb(i,j)=37.3579e-6;
+j=j+1;T(i,j)=16*60+25;nodes(i,j)=2936;meshing(i,j)=1.5625e-6;Fy(i,j)=50e-6;Dxt(i,j)=-20.2588e-6;Dxb(i,j)=-3.65379e-6;Dyt(i,j)=53.7042e-6;Dyb(i,j)=61.2719e-6;
+j=j+1;T(i,j)=26*60+37;nodes(i,j)=2936;meshing(i,j)=1.5625e-6;Fy(i,j)=100e-6;Dxt(i,j)=-37.8397e-6;Dxb(i,j)=-17.5559e-6;Dyt(i,j)=69.8595e-6;Dyb(i,j)=83.3396e-6;
+j=j+1;T(i,j)=32*60+47;nodes(i,j)=2936;meshing(i,j)=1.5625e-6;Fy(i,j)=200e-6;Dxt(i,j)=-54.7847e-6;Dxb(i,j)=-33.1518e-6;Dyt(i,j)=79.9871e-6;Dyb(i,j)=97.9914e-6;
+j=j+1;T(i,j)=41*60+26;nodes(i,j)=2936;meshing(i,j)=1.5625e-6;Fy(i,j)=400e-6;Dxt(i,j)=-68.0025e-6;Dxb(i,j)=-46.085e-6;Dyt(i,j)=86.135e-6;Dyb(i,j)=106.283e-6;
+
+%meshing refinement vs relative error
+figure(1);clf;hold on;
+title('Large deflection analysis: Mesh vs Force vs Y Deflection');
+surfl((L./meshing),Fy,(Dyb));
+plot3((L./meshing),Fy,(Dyb),'');
+xlabel('Meshing [# of discretizations]');
+ylabel('Force [N]');
+zlabel('Y Deflection [m]');
+grid on;
+rotate3d;
+
+figure(2);clf;hold on;
+title('Large deflection analysis: Mesh vs Force vs Time');
+surfl((L./meshing),Fy,T);
+plot3((L./meshing),Fy,T,'');
+xlabel('Meshing [# of discretizations]');
+ylabel('Force [N]');
+zlabel('Time [s]');
+grid on;
+rotate3d;
+
+figure(3);clf;hold on;
+title('Large deflection analysis: Mesh vs Force vs Tolerance');
+surfl((L./meshing(2:6,2:5)),Fy(2:6,2:5),(Dyb(2:6,2:5)-Dyb(1:5,2:5) ));
+plot3((L./meshing(2:6,2:5)),Fy(2:6,2:5),(Dyb(2:6,2:5)-Dyb(1:5,2:5) ),'');
+xlabel('Meshing [# of discretizations]');
+ylabel('Force [N]');
+zlabel('Tolerance [m]');
+grid on;
+rotate3d;
+

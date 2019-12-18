@@ -1,0 +1,40 @@
+%fedder_tang_res
+dE=10e9; dw=0.0e-6;
+E0=165e9;
+w0=2e-6;
+h=2e-6;
+Lb=100e-6;
+L=100e-6;
+Lt=50e-6;
+dk2dw0 = 6*(E0+dE)*h*(w0+dw)^2*(Lt^2/(Lb^2)+14*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6))/(Lb^3*(4*Lt^2/(Lb^2)+41*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6)))+2*(E0+dE)*h*(w0+dw)^3*(42*Lt*(2*w0+dw)^2/(Lb*(w0+dw)^3)-42*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^4)+216*(2*w0+dw)^5/((w0+dw)^6)-216*(2*w0+dw)^6/((w0+dw)^7))/(Lb^3*(4*Lt^2/(Lb^2)+41*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6)))-2*(E0+dE)*h*(w0+dw)^3*(Lt^2/(Lb^2)+14*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6))*(123*Lt*(2*w0+dw)^2/(Lb*(w0+dw)^3)-123*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^4)+216*(2*w0+dw)^5/((w0+dw)^6)-216*(2*w0+dw)^6/((w0+dw)^7))/(Lb^3*(4*Lt^2/(Lb^2)+41*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6))^2);
+dk1dw0 = 12*(E0+dE)*h*(w0+dw)^2/(L^3);
+dk2dE0 = 2*h*(w0+dw)^3*(Lt^2/(Lb^2)+14*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6))/(Lb^3*(4*Lt^2/(Lb^2)+41*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6)));
+dk1dE0 = 2*h*(w0+dw)^3*(Lt^2/(Lb^2)+14*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6))/(Lb^3*(4*Lt^2/(Lb^2)+41*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6)));
+k10 = 4*(E0+dE)*h*(w0+dw)^3/(L^3);
+k20 = 2*(E0+dE)*h*(w0+dw)^3*(Lt^2/(Lb^2)+14*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6))/(Lb^3*(4*Lt^2/(Lb^2)+41*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6)));
+W=0.5e-6;
+i=0;
+for dw = 0:W/100:W
+    dk2dw = 6*(E0+dE)*h*(w0+dw)^2*(Lt^2/(Lb^2)+14*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6))/(Lb^3*(4*Lt^2/(Lb^2)+41*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6)))+2*(E0+dE)*h*(w0+dw)^3*(42*Lt*(2*w0+dw)^2/(Lb*(w0+dw)^3)-42*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^4)+216*(2*w0+dw)^5/((w0+dw)^6)-216*(2*w0+dw)^6/((w0+dw)^7))/(Lb^3*(4*Lt^2/(Lb^2)+41*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6)))-2*(E0+dE)*h*(w0+dw)^3*(Lt^2/(Lb^2)+14*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6))*(123*Lt*(2*w0+dw)^2/(Lb*(w0+dw)^3)-123*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^4)+216*(2*w0+dw)^5/((w0+dw)^6)-216*(2*w0+dw)^6/((w0+dw)^7))/(Lb^3*(4*Lt^2/(Lb^2)+41*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6))^2);
+    dk1dw = 12*(E0+dE)*h*(w0+dw)^2/(L^3);
+    dk2dE = 2*h*(w0+dw)^3*(Lt^2/(Lb^2)+14*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6))/(Lb^3*(4*Lt^2/(Lb^2)+41*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6)));
+    dk1dE = 2*h*(w0+dw)^3*(Lt^2/(Lb^2)+14*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6))/(Lb^3*(4*Lt^2/(Lb^2)+41*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6)));
+    k1 = 4*(E0+dE)*h*(w0+dw)^3/(L^3);
+    k2 = 2*(E0+dE)*h*(w0+dw)^3*(Lt^2/(Lb^2)+14*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6))/(Lb^3*(4*Lt^2/(Lb^2)+41*Lt*(2*w0+dw)^3/(Lb*(w0+dw)^3)+36*(2*w0+dw)^6/((w0+dw)^6)));
+    i=i+1;
+    K1(i)=k1;
+    K2(i)=k2;
+    dK2dw(i) = dk2dw;
+    dK1dw(i) = dk1dw;
+    dK1dE(i) = dk1dE;
+    dK2dE(i) = dk2dE;
+    DW(i) = dw;
+end
+figure(1);
+plot(DW,K1/k10,'b',DW,K2/k20,'r');
+figure(2);
+plot(DW,dK1dw/dk1dw0,'b',DW,dK2dw/dk2dw0,'r');
+figure(3);
+plot(DW,dK1dE/dk1dE0,'b',DW,dK2dE/dk2dE0,'r');
+figure(4);
+plot(DW,dK1dE/dk1dE0,'b',DW,dK2dE/dk2dE0,'r');

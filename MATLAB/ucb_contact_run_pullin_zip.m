@@ -1,0 +1,52 @@
+'////////////////////////////////'
+clear all
+clear y1 y2 vv v1 v2
+tic
+V1 = 0;
+V2 = 4; 
+i = 0;
+netlist = 'net_ucb_contact_pullthrough';
+%init
+    p.V = V1; 
+    net = cho_load(netlist,p);
+    [q] = cho_dc_q(net);
+
+for V = V1 : (V2-V1)/10000 : V2
+    i = i + 1;
+    p.V = V; 
+    net = cho_load(netlist,p);
+    [q] = cho_dc_q(net,q);
+    y1(i) = q(lookup_coord(net,'a(1)','y'));
+    y2(i) = q(lookup_coord(net,'a(4)','y'));
+    y3(i) = q(lookup_coord(net,'a(7)','y'));
+    v1(i) = q(lookup_coord(net,'a(1)','e'));
+    v2(i) = q(lookup_coord(net,'a(4)','e'));
+    v3(i) = q(lookup_coord(net,'a(7)','e'));
+    vv(i) = V;
+end
+
+figure(4);
+cho_display(net,q);
+
+figure(2); clf; hold on; grid on;
+plot(vv,y1,'g');
+plot(vv,y2,'r');
+plot(vv,y3,'b');
+y1=y1(i)
+y2=y2(i) 
+   
+figure(3); clf; hold on; grid on;
+plot(vv,v1,'g');
+plot(vv,v2,'r');
+plot(vv,v3,'b');
+
+figure(2);
+title('Deflection [node a1 (blue), a2 (red)] vs anchor voltage (node e)');
+xlabel('Input anchor voltage of node e [V]');
+ylabel('Output deflection of node a1 (blue) & a2 (red) [m]');
+
+figure(3);
+title('Gap voltage [node a1 (blue), a2 (red)] vs anchor voltage (node e)');
+xlabel('Input anghor voltage of node e [V]');
+ylabel('Output gap voltage of node a1 (blue) & a2 (red) [V]');
+toc

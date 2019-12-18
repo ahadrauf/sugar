@@ -1,0 +1,27 @@
+%microshutter_2
+
+u = 1e-6; %micron
+h = 2*u; %thickness
+w = 2*u; %width
+g = 2*u; %initial gap
+L = 100*u; %flexure length
+E = 160e9; %modulus
+I = h*w^3/12; %2nd moment of area
+K1 = 3*E*I/(L/2)^3; %half beam
+K2 = K1/2; %full beam
+K = K2*2 %double beam
+e0 = 8.854e-12; %permittivity
+Vpi0 = sqrt( 8/27 * K * g^3 / (e0 * L * h) ); %zero-state pullin
+
+V = 0.81;
+Fgap = 1/2 * e0 * L*h * V^2 / g^2; %if gap is used
+Fcomb = 1/2 * 2 * 25 * e0 * h * V^2 / g; %if comb is used
+M = 2300 * h * L * 25 * w; %proof mass
+w = sqrt( K / M); %resonance
+D = 1.55e-7 / 1000; %damping 1000 times lower than air
+xmax = Fgap / (w * D ) %max amplitude
+F = K * xmax %spring force at xmax
+Vpi = sqrt( F / (1/2 * e0 * L*h / (g-xmax)^2) ) %pullin at xmax
+
+
+

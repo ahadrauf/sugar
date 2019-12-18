@@ -1,0 +1,38 @@
+.SUFFIXES : .c
+
+CC=cl
+CFLAGS=
+.c.o:
+	$(CC) -c $(CFLAGS) -Fo$@ $<
+
+sugar-c.exe: sugar_c.o sugar.tab.o lex.yy-win.o parse.o symbol.o codegen.o
+	$(CC) /Fesugar-c sugar_c.o sugar.tab.o lex.yy-win.o \
+                         parse.o symbol.o codegen.o
+
+sugar_c.o: sugar_c.c
+
+parse.o: parse.c parse.h symbol.h
+
+symbol.o: symbol.c symbol.h
+
+codegen.o: codegen.c codegen.h
+
+sugar.tab.o: sugar.tab.c parse.h
+
+lex.yy.o: lex.yy.c sugar.tab.c
+
+lex.yy-win.o: lex.yy-win.c sugar.tab.c
+
+
+sugar.tab.c: sugar.y
+	bison -v -d sugar.y
+
+lex.yy.c: sugar.lex
+	flex sugar.lex
+	cat lex.yy.c | awk '!/unistd.h/' > lex.yy-win.c
+
+clean:
+	del *.o
+
+clean-all:
+	del *.o sugar-c.exe

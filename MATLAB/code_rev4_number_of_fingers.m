@@ -1,0 +1,81 @@
+format compact
+clear all
+clc
+i = 0;
+for N =  70: 1 : 200 
+i=i+1;
+
+%% Design parameters
+V = 100;% voltage can be modified to 10, 20, 30 or so.....
+u = 1e-6; %micro scale
+linewidth = 20*u; %Minimum linewidth
+w = linewidth; %width of flexure
+gf = linewidth; %gap between fingers
+wf = linewidth; %width of fingers
+Lf = 60*u; %Finger length
+h = 10*u; %layer thickness
+%N = 70; %Total number of fingers
+L = 1000*u; %length of flexure
+
+%% Material properties
+rho = 2350; %density of Silicon
+e0 = 8.854e-12;% Permittivity of Air
+E = 169e9; %Elastic modulus of Si
+
+%% Force
+F = 2 * N * 1/2 * e0 * h * V^2 / gf; %Combdrive force computation
+ 
+%% Mass
+LM = 1e-3; %Length of main mass
+main_mass = rho * h * LM^2; %Computing the proof mass
+finger_mass = rho * h * 2*N * wf * Lf; %Computing the Finger Mass
+M = main_mass + finger_mass; %Computing the Bulk Mass
+
+%% Spring & angular frequency
+K = 3 * E * h*w^3 / (12 * (L/2)^3);  %Stiffness computation
+omega = sqrt(K/M); %Resonace [rad/sec]
+
+%% Damping
+overlap = 40*u; %overlap of fingers
+h_SiO2 = 10*2*u; %thickness of air under proof mass
+mu = 1.75e-5; %viscosity of air [sPa]
+Df = (2 * 2 * N * mu * overlap * h / gf) + (2 * N * mu * Lf * wf / h_SiO2) ; %Damping contribution by the fingers
+DM = mu * LM^2 / h_SiO2; %Damping contribution by the mass
+D = DM + Df; %Total damping
+    
+%% Amplitude at resonance
+A = F / (D * omega); %Amplitude of Resonance
+Q = omega * M / D; %Quality factor computation
+
+x(i) = N;
+y(i) = A;
+z(i) = Q;
+p(i) = F;
+v(i) = omega;
+r(i) = K;
+DD(i) = D;
+end
+
+figure(1);clf; hold on; grid on; plot(x,y); %%Amplitude vs Number of Fingers
+ylabel('Amplitude [m]'); xlabel('Number of Fingers'); title('Amplitude vs Number of Fingers');
+
+figure(4);clf; hold on; grid on; plot(x,v/(2*pi)/1e3); %%Resonance Frequency vs Number of Fingers
+ylabel('Resonance frequency [kHz]'); xlabel('Number of Fingers'); title('Resonance vs Number of Fingers');
+
+figure(6);clf; hold on; grid on; plot(x,p./(DD.*y.*v) ); %%Resonance Frequency vs Number of Fingers
+ylabel('CombForce/DampingForce'); xlabel('Number of Fingers'); title('CombForce/DampingForce vs Number of Fingers');
+
+if 0
+figure(2);clf; hold on; grid on; plot(x,z,'-'); %%Quality factor vs Number of Fingers
+ylabel('Q');
+xlabel('N');
+
+figure(3);clf; hold on; grid on; plot(x,p,'-'); %%Combdrive Force vs Number of Fingers
+ylabel('F');
+xlabel('N');
+
+figure(5);clf; hold on; grid on; plot(x,r,'-'); %%Stiffness vs Number of Fingers
+ylabel('K');
+xlabel('N');
+end
+

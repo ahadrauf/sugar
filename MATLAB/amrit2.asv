@@ -1,0 +1,53 @@
+V = 100; %Applied voltage
+u = 1e-6; %Micro
+H = 10*u; %Thickness
+Ndr = 60; %Number of drive fingers
+Nsn = 100; %Number of sense fingers 
+Nfb = 100; %Number of feedback fingers
+Lcomb = 100*u; %Comb finger length
+lw = 10*u; %linewidth
+
+%10um feature size
+if lw == 10*u
+    L = 1000*u; %Flexures length
+    w = lw; g = lw; %Width and gap
+    Lm = 11010*u; Wm = 400*u; %Mass geometry
+elseif lw == 20*u
+    L = 2000*u; %Flexures length
+    w = lw; g = lw; %Width and gap
+    Lm = 12100*u; Wm = 600*u; %Mass geometry
+elseif lw == 40*u
+    L = 2000*u; %Flexures length
+    w = lw; g = lw; %Width and gap
+    Lm = 12390*u; Wm = 600*u; %Mass geometry
+end
+    
+rho = 2350; %density of Silicon
+e0 = 8.85e-12;% Permittivity of Air
+E = 169e9; %Elastic modulus
+Fdr = Ndr * e0 * H * V^2 / g; %Combdrive force computation
+Fsn = Nsn * e0 * H * V^2 / g; %Combdrive force computation
+Ffb = Nfb * e0 * H * V^2 / g; %Combdrive force computation
+main_mass = rho * H * Lm * Wm;
+N = Ndr + Nfb + Nsn;
+finger_mass = rho * H * 2*N * w * Lcomb; 
+M = main_mass + finger_mass; %Computing the Bulk Mass
+K = 2 * 192 * E * H * w^3 / (12 * (2*L)^3);  %Four beams combined into two fixed-fixed beams 
+omega = sqrt(K/M); %Resonace [rad/sec]
+
+%% Damping
+overlap = 40*u; %overlap of fingers
+fluid_layer = 10*2*u; %thickness of air under proof mass
+mu = 1.75e-5; %viscosity of air [sPa]
+Df = 2*N * mu * overlap * H / g; %Damping contribution by the fingers
+DM = mu * Lm * Wm / fluid_layer; %Damping contribution by the mass
+D = DM + Df; %Total damping
+    
+%% Amplitude at resonance
+'///////////////////////////'
+Adr = Fdr / (D * omega) %Amplitude of Resonance
+xdr = Fdr / K
+%Q = omega * M / D; %Quality factor computation
+
+
+

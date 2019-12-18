@@ -1,0 +1,75 @@
+subnet predisplacedbeam3 [A B][l=* w=* qx=* qy=* qz=* qox=* qoy=* qoz=*]
+[
+resolution=10
+pi=3.141592653589793 
+x1=0
+y1=0
+z1=0
+ox1=0
+oy1=0
+oz1=0
+x2=qx
+y2=qy
+z2=qz
+ox2=qox*pi/180
+oy2=qoy*pi/180
+oz2=qoz*pi/180
+L=l
+%slope deflection coefficients
+ax0=0
+ax1=(L+x2-x1)/L
+ay0=0
+ay1=oz1
+ay2=3*(y2-y1)/L/L-(2*oz1+oz2)/L
+ay3=-2*(y2-y1)/L/L/L+(oz1+oz2)/L/L
+az0=0
+az1=-oy1
+az2=3*(z2-z1)/L/L+(2*oy1+oy2)/L
+az3=-2*(z2-z1)/L/L/L-(oy1+oy2)/L/L
+%first beam
+i=0
+x=L*i/(resolution-1) 
+u1=ax0+ax1*x 
+v1=ay0+ay1*x+ay2*x*x+ay3*x*x*x 
+w1=az0+az1*x+az2*x*x+az3*x*x*x 
+x=L*(i+1)/(resolution-1) 
+u2=ax0+ax1*x 
+v2=ay0+ay1*x+ay2*x*x+ay3*x*x*x 
+w2=az0+az1*x+az2*x*x+az3*x*x*x 
+oy=atan((w2-w1)/(u2-u1))*180/pi 
+oz=atan((v2-v1)/(u2-u1))*180/pi 
+ox=ox2*i/resolution
+beam3d parent [A a(1)][l=L/resolution w=w ox=ox oy=oy oz=oz] 
+%intermediate beams
+for i=1:resolution-2
+[
+   x=L*i/(resolution-1) 
+   u1=ax0+ax1*x 
+   v1=ay0+ay1*x+ay2*x*x+ay3*x*x*x 
+   w1=az0+az1*x+az2*x*x+az3*x*x*x 
+   x=L*(i+1)/(resolution-1) 
+   u2=ax0+ax1*x 
+   v2=ay0+ay1*x+ay2*x*x+ay3*x*x*x 
+   w2=az0+az1*x+az2*x*x+az3*x*x*x 
+   oy=atan((w2-w1)/(u2-u1))*180/pi 
+   oz=atan((v2-v1)/(u2-u1))*180/pi 
+   ox=ox2*i/resolution
+   beam3d parent [a(i) a(i+1)][l=L/resolution w=w ox=ox oy=oy oz=oz] 
+]
+%last beam
+i=resolution-1
+x=L*i/(resolution-1) 
+u1=ax0+ax1*x 
+v1=ay0+ay1*x+ay2*x*x+ay3*x*x*x 
+w1=az0+az1*x+az2*x*x+az3*x*x*x 
+x=L*(i+1)/(resolution-1) 
+u2=ax0+ax1*x 
+v2=ay0+ay1*x+ay2*x*x+ay3*x*x*x 
+w2=az0+az1*x+az2*x*x+az3*x*x*x 
+oy=atan((w2-w1)/(u2-u1))*180/pi 
+oz=atan((v2-v1)/(u2-u1))*180/pi 
+ox=ox2*i/resolution
+beam3d parent [a(i) B][l=L/resolution w=w ox=ox oy=oy oz=oz] 
+]
+
+

@@ -1,0 +1,64 @@
+uses mumps.net
+
+%anchors and their torsion hinges:
+
+
+%outer frame:
+beam3d  p1 [ a  b  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=-90 h=4e-6]
+beam3d  p1 [ b  c  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=-90 h=4e-6]
+beam3d  p1 [ c  d  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=-90 h=4e-6]
+beam3d  p1 [ d  e  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=-90 h=4e-6]
+beam3d  p1 [ e  f  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=-90 h=4e-6]
+beam3d  p1 [ f  g  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=-90 h=4e-6]
+beam3d  p1 [ a  a1  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=0 h=4e-6]
+beam3d  p1 [a1  a2  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=0 h=4e-6]
+beam3d  p1 [ a2  a3  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=0 h=4e-6]
+beam3d  p1 [ a3 a4 ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=0 h=4e-6]
+beam3d  p1 [ a4 a5 ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=0 h=4e-6]
+beam3d  p1 [ a5  a6  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=0 h=4e-6]
+
+beam3d  p1 [ g  g1 ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=0 h=4e-6]
+beam3d  p1 [ g1  g2 ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=0 h=4e-6]
+beam3d  p1 [ g2  g3  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=0 h=4e-6]
+beam3d  p1 [ g3  g4  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=0 h=4e-6]
+beam3d  p1 [ g4  g5 ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=0 h=4e-6]
+beam3d  p1 [ g5  g6  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=0 h=4e-6]
+
+beam3d  p1 [ a6 b6  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=-90 h=4e-6]
+beam3d  p1 [ b6 c6  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=-90 h=4e-6]
+beam3d  p1 [ c6 d6  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=-90 h=4e-6]
+beam3d  p1 [ d6 e6  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=-90 h=4e-6]
+beam3d  p1 [ e6  f6  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=-90 h=4e-6]
+beam3d  p1 [ f6  g6  ] [ l=3.3333e-4 w=20e-5 ox=0 oy=0 oz=-90 h=4e-6]
+
+%inner torsion hinges:
+beam3d  p1 [ c  lt ] [ l=5e-4 w=1e-4 ox=0 oy=0 oz=0 h=1.25e-6] %left top
+beam3d  p1 [ e  lb ] [ l=5e-4 w=1e-4 ox=0 oy=0 oz=0 h=1.25e-6] %left bottom
+beam3d  p1 [ a2 tl ] [ l=5e-4 w=1e-4 ox=0 oy=0 oz=-90 h=1.25e-6] %top left
+beam3d  p1 [ a4 tr ] [ l=5e-4 w=1e-4 ox=0 oy=0 oz=-90 h=1.25e-6] %top right
+beam3d  p1 [ c6 rt ] [ l=5e-4 w=1e-4 ox=0 oy=0 oz=180 h=1.25e-6] %right top
+beam3d  p1 [ e6 rb ] [ l=5e-4 w=1e-4 ox=0 oy=0 oz=180 h=1.25e-6] %right bottom
+beam3d  p1 [ g2 bl ] [ l=5e-4 w=1e-4 ox=0 oy=0 oz=90 h=1.25e-6] %bottom left 
+beam3d  p1 [ g4 br ] [ l=5e-4 w=1e-4 ox=0 oy=0 oz=90 h=1.25e-6] %bottom right
+
+%inner solid "plate":
+u = 166.66666u
+v = 333.33333u
+w = 666.66666u
+%beam3d  p1 [d2 d5 ] [ l=1e-3 w=1e-3 ox=0 oy=0 oz=0 h=4e-6]
+beam3d  p1 [lt lttl ] [ l=u w=v oz=0 h=4e-6]
+beam3d  p1 [tl lttl ] [ l=u w=v oz=-90 h=4e-6]
+beam3d  p1 [tr trrt ] [ l=u w=v oz=-90 h=4e-6]
+beam3d  p1 [rt trrt ] [ l=u w=v oz=180 h=4e-6]
+beam3d  p1 [lb lbbl ] [ l=u w=v oz=0 h=4e-6]
+beam3d  p1 [bl lbbl ] [ l=u w=v oz=90 h=4e-6]
+beam3d  p1 [br brrb ] [ l=u w=v oz=90 h=4e-6]
+beam3d  p1 [rb brrb ] [ l=u w=v oz=180 h=4e-6]
+beam3d  p1 [lttl lbbl ] [ l=w w=v oz=-90 h=4e-6]
+beam3d  p1 [trrt brrb ] [ l=w w=v oz=-90 h=4e-6]
+beam3d  p1 [trrt lttl ] [ l=w w=v oz=180 h=4e-6]
+beam3d  p1 [lbbl brrb ] [ l=w w=v oz=0 h=4e-6]
+
+
+
+

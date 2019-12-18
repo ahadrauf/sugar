@@ -1,0 +1,116 @@
+% p.V=0; net=cho_load('Cube_nanosonix_DesignA_5.m',p); q=cho_dc(net); figure(1); clf; cho_display(net,q); one = q(lookup_coord(net, 'c7', 'y'))
+
+uses mumps.net
+
+%SugarCube parameters
+sugarcube * [] [ 
+    L1 = 'Base electrode length, m, 25e-6, 10e-6, 200e-6' 
+    L2 = 'Middle electrode length, m, 50e-6, 10e-6, 200e-6' 
+    L3 = 'Tip electrode length, m, 25e-6, 10e-6, 200e-6' 
+    V = 'Voltage, V, 0, 0, 200' 
+	w = 'Cantilever width, m, 10e-6, 2e-6, 60e-6' 
+    g2 = 'Tip gap, m, 2e-6, 0.25e-6, 10e-6'
+	g1 = 'Gaps between ground electrode, m, 0.25e-6, 10e-6'
+	nodes = 'c7' ]
+
+%Parameters to modify
+param L1 = 25u %Length of base electrode 
+param L2 = 50u %Length of middle electrode 
+param L3 = 25u %Length of tip electrode 
+param w = 10u %Width of cantilever
+param V = 10 %Voltage 
+param g1 = 2u %Gap between p0 electrode
+param g2 = 2u %Gap at tip electrode
+ 
+%Other parameters
+V1 = V %Voltage under base gap
+V2 = V %Voltage under middle gap 
+V3 = V %Voltage under tip gap
+g = 4u %Distance between bond pads
+L4 = 20u %Length of tip beam
+A2 = 100u %Size of large bond pads
+m1 = 4*g %Margin between edge of cantilever and ground plane
+p0 = 4u %Poly 0 encapsulation 
+w0 = w + 2*p0 %Width of ground plane
+A1 = w0 %Small anchor size
+gt = 4u %Tracer gap
+
+%Link from left anchor p1 to ground electrode p0
+h1 = 2u %Layer thickness
+h0 = 0.5u %Layer thickness
+o1 = 2u %Oxide thickness
+Y = h1/2 + h0/2 + o1 %Distance p1 to p0
+theta = atan(Y/(g1+p0)) %Angle of link
+H = sqrt( Y^2 + (g1+p0)^2 ) %Link length
+
+%Cantilever
+bondingpad  p1 [c1] [l=A1 w=A1 oz=pi]
+beam3d p1 [c1 c2] [l=g1+p0 w=w ]
+beam3d p1 [c2 c3] [l=L1 w=w ]
+beam3d p1 [c3 c4] [l=g1 w=w ]
+beam3d p1 [c4 c5] [l=L2 w=w ]
+beam3d p1 [c5 c6] [l=g1 w=w ]
+beam3d p1 [c6 c7] [l=L3 w=w ]
+f3d * [c7] [ M=1p oz=pi/2 ] %Strain gradient
+
+%Electrostatic forces
+f3d * [c2] [ F = (1/2 * 8.845e-12 * V^2 * L1 * w / o1^2)/2 oy=pi/2 ]
+f3d * [c3] [ F = (1/2 * 8.845e-12 * V^2 * L1 * w / o1^2)/2 oy=pi/2 ]
+f3d * [c4] [ F = (1/2 * 8.845e-12 * V^2 * L2 * w / o1^2)/2 oy=pi/2 ]
+f3d * [c5] [ F = (1/2 * 8.845e-12 * V^2 * L2 * w / o1^2)/2 oy=pi/2 ]
+f3d * [c6] [ F = (1/2 * 8.845e-12 * V^2 * L3 * w / o1^2)/2 oy=pi/2 ]
+f3d * [c7] [ F = (1/2 * 8.845e-12 * V^2 * L4 * w / o1^2)/2 oy=pi/2 ]
+
+%Ground electrodes
+beam3dlink p0 [c1 b2] [L1=H oy1=theta l=L1 w=w0 ]
+beam3dlink p0 [b2 b3] [L1=g1 l=L2 w=w0 ]
+beam3dlink p0 [b3 b4] [L1=g1 l=L3 w=w0 ]
+
+%Tracer parameters
+tw = 2u %Width of tracer wire
+Lp0 = A1 + p0 + g1 + L1/2
+Lp1 = Lp0 - A2/2
+Lp00 = Lp0 + L1/2 + g1 + L2 + g1 + L3/2
+Lp2 = Lp00 - (A2 + p0 + g + p0 + A2/2)
+Lp3 = (Lp0 + L1/2 + g1 + L2/2) - A2/2
+Lp4 = (Lp00 + L3/2 + g2 + L4 + A1/2) - (A2 + p0 + g + p0 + A2/2)
+LL11   = gt + tw/2
+LL1  = LL11 + gt + tw/2
+
+%Tracer right electrode
+corner = tw/2
+beam3dlink_cloak p0 [b4 t1] [l=g2+L4 w=w oy2=-pi/2 L2=(h0/2+h1/2+o1)]
+beam3dlink p0 [t1 t2] [L1=(h0/2+h1/2+o1) oy1=pi/2 l=A1/2 w=tw ]
+beam3dlink p0 [t2 t3] [l=w0/2+LL1+corner w=tw L2=-corner oz=-pi/2]
+beam3d p0 [t4 t3] [l=Lp4 w=tw ]
+beam3dlink p0 [t4 t5] [L1=-corner l=corner+LL11+p0 w=tw oz=-pi/2]
+bondingpad  p1 [t5] [l=A2 w=A2 oz=-pi/2]
+
+%Tracer base 
+beam3dlink p0 [b2 t6] [L1=L1/2 oz1=pi/2 l=w0/2+LL11+corner w=tw oz=pi/2 L2=-corner ]
+beam3d p0 [t7 t6] [l=Lp1 w=tw ]
+beam3dlink p0 [t7 t8] [L1=-corner l=corner+LL1+p0 w=tw oz=pi/2]
+bondingpad  p1 [t8] [l=A2 w=A2 oz=pi/2]
+
+%Tracer tip 
+beam3dlink p0 [b4 t9] [L1=L3/2 oz1=pi/2 l=w0/2+LL1+corner w=tw oz=pi/2 L2=-corner ]
+beam3d p0 [t10 t9] [l=Lp2 w=tw ]
+beam3dlink p0 [t10 t11] [L1=-corner l=corner+LL11+p0 w=tw oz=pi/2]
+bondingpad  p1 [t11] [l=A2 w=A2 oz=pi/2]
+
+%Tracer middle 
+beam3dlink p0 [b3 t12] [L1=L2/2 oz1=-pi/2 l=w0/2+LL11+corner w=tw oz=-pi/2 L2=-corner ]
+beam3d p0 [t13 t12] [l=Lp3 w=tw ]
+beam3dlink p0 [t13 t14] [L1=-corner l=corner+LL1+p0 w=tw oz=-pi/2]
+bondingpad  p1 [t14] [l=A2 w=A2 oz=-pi/2]
+
+%Opposing electrode 
+beam3d p1 [r1 t1] [l=L4 w=w ]
+bondingpad p1 [t1] [l=A1 w=A1 ]
+
+%Tracer common ground 
+beam3dlink p0 [g1 b2] [l=(L1/2+Lp1+A2/2+p0) + tw/2+p0+corner - (L1+g1+p0) L2=L1+g1+p0 w=tw L1=-corner]
+commonground p0 [g1 g2] [l=w0/2+LL1+LL11+A2+3*p0 w=tw oz=-pi/2]
+
+
+                        

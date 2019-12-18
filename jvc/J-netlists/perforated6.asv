@@ -1,0 +1,25 @@
+%net=cho_load('perforated6.m');figure(1);cho_display(net);
+%net=cho_load('perforated6.m');[q,k]=cho_dc(net);figure(1);cho_display(net,q);
+
+uses mumps3.net
+uses perforated_subnet7.m
+anchor p1 [left][l=1u w=1u h=1u ]
+perforated_subnet7 p1 [a(1) b(1) left right A B][numberholes=10 w=20u h=15u l=200u whorizontal=5u wvertical=5u] 
+
+beam3d p1 [ A aa ] [l=7.5u  w=100u h=100u oz=-pi/2]
+beam3d p1 [ B aa ] [l=7.5u  w=100u h=100u oz=pi/2]
+
+%beam3d p1 [ aa aaa ] [l=47.5u  w=100u h=100u oz=pi/2]
+%beam3d p1 [ aa bbb ] [l=47.5u  w=100u h=100u oz=-pi/2]
+%beam3d p1 [ aa aaa ] [l=47.5u  w=100u h=100u oz=pi/2]
+%beam3d p1 [ aa bbb ] [l=47.5u  w=100u h=100u oz=-pi/2]
+
+
+%f3d * [aa][M=9.5e-9]
+f3d * [aaa][F=100e-6 oy=pi/2]
+f3d * [bbb][F=-100e-6 oy=pi/2]
+
+
+anchor p1 [a(1)][l=1u w=1u h=1u ]
+anchor p1 [b(1)][l=1u w=1u h=1u ]
+

@@ -1,0 +1,21 @@
+uses mumps.net
+
+beam3d p1 [A B] [l=2800u w=2800u h=30u ox=90]
+beam3d p1 [B C] [l=1400u w=100u h=30u oy=90 ox=90]
+beam3d p1 [B D] [l=1400u w=100u h=30u oy=270 ox=90]
+beam3d p1 [A E] [l=1400u w=100u h=30u oy=90 ox=90]
+beam3d p1 [A F] [l=1400u w=100u h=30u oy=270 ox=90]
+beam3d p1 [F G] [l=1400u w=100u h=30u ox=90]
+beam3d p1 [G D] [l=1400u w=100u h=30u ox=90]
+beam3d p1 [E H] [l=1400u w=100u h=30u ox=90]
+beam3d p1 [H C] [l=1400u w=100u h=30u ox=90]
+
+beam3d p1 [C J] [l=400u w=50u h=50u oz=270]
+beam3d p1 [J K] [l=400u w=50u h=50u oz=270]
+
+beam3d p1 [H J] [l=1456u w=15u h=15u oz=344.05]
+
+beam3d p1 [D L] [l=200u w=50u h=50u oz=270]
+beam3d p1 [L M] [l=200u w=50u h=50u oz=270]
+
+beam3d p1 [G L] [l=1412.2u w=15u h=15	u oz= 351.87]	

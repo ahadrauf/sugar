@@ -1,0 +1,62 @@
+%% Matlab code to find the frequency response of Single Duffing oscillator
+clear all;
+clc; clf;
+% Given values
+gamma = 1; % Nonlinear Parameter
+q = 0.2; % Forcing amplitude
+beta = 0.05; % linear damping
+w0=1; % Primary resonance
+
+a=linspace(0.01,2.5,100); % Range of a
+%Finding the values of excitation frequency Omega/w0= F and G.
+% And corresponding eigen values
+%
+for ii=1:1:length(a)
+     F(ii)=(1+3*gamma/(8*w0^2)*a(ii)^2+sqrt((q/(2*w0^2*a(ii)))^2-beta^2));
+     lamF1=sqrt(-(F(ii)-w0-3*gamma/(8*w0)*a(ii)^2)*(F(ii)-w0-9*gamma/(8*w0)*a(ii)^2))-(beta*w0);
+     lamF2=-sqrt(-(F(ii)-w0-3*gamma/(8*w0)*a(ii)^2)*(F(ii)-w0-9*gamma/(8*w0)*a(ii)^2))-(beta*w0);
+     G(ii)=(1+3*gamma/(8*w0^2)*a(ii)^2-sqrt((q/(2*w0^2*a(ii)))^2-beta^2));
+     lamG1=sqrt(-(G(ii)-w0-3*gamma/(8*w0)*a(ii)^2)*(G(ii)-w0- 9*gamma/(8*w0)*a(ii)^2))-(beta*w0);
+     lamG2=-sqrt(-(G(ii)-w0-3*gamma/(8*w0)*a(ii)^2)*(G(ii)-w0- 9*gamma/(8*w0)*a(ii)^2))-(beta*w0);
+     if lamF1==conj(lamG1)% % To terminate the loop
+         break
+     else
+        if gamma>0 % For spring hardening effect
+             plot(G(ii),a(ii),'-g.');
+             j1 = j1 + 1;
+             Y1(j1) = G(ii);
+             X1(j1) = a(ii);
+             hold on
+             FG=(F(ii)-w0-3*gamma/(8*w0)*a(ii)^2)*(F(ii)-w0- 9*gamma/(8*w0)*a(ii)^2)+(beta*w0)^2;
+         if FG<0
+             plot(F(ii),a(ii),'-r.')
+             j1 = j1 + 1;
+             Y2(j2) = F(ii);
+             X2(j2) = a(ii);
+         else
+             plot(F(ii),a(ii),'-b.')
+         end
+ else
+     plot(F(ii),a(ii),'-b');
+     hold on
+
+     GF=(G(ii)-w0-3*gamma/(8*w0)*a(ii)^2)*(G(ii)-w0- 9*gamma/(8*w0)*a(ii)^2)+(beta*w0)^2;
+
+    if GF<0
+        plot(G(ii),a(ii),'-r')
+    else
+        plot(G(ii),a(ii),'-b')
+    end
+end
+
+ end
+end
+xlim([0,2.5]); % Range of x-axis
+ylim([0,2.5]); %Range of y-axis
+xlabel('\Omega/\omega_{0}') % Label of x-axis
+ylabel('a') % Label of y-axis
+%title('Frequency response of a nonlinear system with \beta=0.05, q=0.2,\gamma=0.5, \epsilon=1')
+% title('Effect of forcing paramter q for the system with \beta=0.05,\gamma=0.5, \epsilon=1')
+% title('Effect of damping paramter beta for the system with q=0.2,\gamma=0.5, \epsilon=1')
+%title('Effect of nonlinear paramter \gamma for the system with \beta=0.05,q=0.2, \epsilon=1')
+grid on;

@@ -1,0 +1,19 @@
+%net=cho_load('perforated3.m');figure(1);cho_display(net);
+%net=cho_load('perforated3.m');[q,k]=cho_dc(net);figure(1);cho_display(net,q);
+
+uses mumps.net
+uses perforated.m
+
+L=1u
+
+anchor p1 [left][l=L w=L h=L oz=-pi]
+
+perforated p1 [left right][numberholes=10 w=18u h=18u l=140u whorizontal=4u wvertical=4u] 
+
+
+F = (1e-1) / (4e-6 * 18e-6) 
+M = F*8u;
+
+f3d * [right][M=M]
+
+%f3d * [right][F=-1000u oy=pi/2]

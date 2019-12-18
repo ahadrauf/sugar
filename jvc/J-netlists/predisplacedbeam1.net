@@ -1,0 +1,52 @@
+subnet predisplacedbeam1 [A B][l=* w=* qx=* qy=* qz=* qox=* qoy=* qoz=*]
+[
+resolution=10
+pi=3.141592653589793 
+x1=0
+y1=0
+z1=0
+ox1=0
+oy1=0
+oz1=0
+x2=qx
+y2=qy
+z2=qz
+ox2=qox*pi/180
+oy2=qoy*pi/180
+oz2=qoz*pi/180
+L=l
+%slope deflection coefficients
+ax0=0
+ax1=(L+x2-x1)/L
+ay0=0
+ay1=oz1
+ay2=3*(y2-y1)/L/L-(2*oz1+oz2)/L
+ay3=-2*(y2-y1)/L/L/L+(oz1+oz2)/L/L
+az0=0
+az1=-oy1
+az2=3*(z2-z1)/L/L+(2*oy1+oy2)/L
+az3=-2*(z2-z1)/L/L/L-(oy1+oy2)/L/L
+%segmented beams
+
+i=1
+   x=L*i/resolution 
+   dvdx=ay1+2*ay2*x+3*ay3*x*x 
+   dwdx=az1+2*az2*x+3*az3*x*x 
+   beam3d parent [A a(2)][l=L/resolution w=w ox=ox2*i/resolution oy=dvdx oz=dwdx] 
+
+
+for i=2:resolution-1
+[
+   x=L*i/resolution 
+   dvdx=ay1+2*ay2*x+3*ay3*x*x 
+   dwdx=az1+2*az2*x+3*az3*x*x 
+   beam3d parent [a(i) a(i+1)][l=L/resolution w=w ox=ox2*i/resolution oy=dvdx oz=dwdx] 
+]
+]
+
+
+i=10
+   x=L*i/resolution 
+   dvdx=ay1+2*ay2*x+3*ay3*x*x 
+   dwdx=az1+2*az2*x+3*az3*x*x 
+   beam3d parent [a(i) B][l=L/resolution w=w ox=ox2*i/resolution oy=dvdx oz=dwdx] 

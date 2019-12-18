@@ -1,0 +1,49 @@
+% net=cho_load('predispP1.m');[q]=cho_dc(net);figure(1);cho_display(net,q);
+% p.qx=q(1);p.qy=q(2);p.qz=q(3);p.qox=q(4);p.qoy=q(5);p.qoz=q(6);net=cho_load('predisp1.net',p);[q]=cho_dc(net);figure(1);cho_display(net,q);
+%p.qx=q(1);p.qy=q(2);p.qz=q(3);p.qox=q(4);p.qoy=q(5);p.qoz=q(6);net=cho_load('predisp1.net',p);[qq]=cho_dc(net);figure(1);cho_display(net,qq);
+
+uses mumpsx.net
+uses predisplacedbeam3a.net
+pi=3.141592
+param qx=0 
+param qy=110u 
+param qz=0 
+param qox=0 
+param qoy=0 
+param qoz=0
+
+anchor  p1 [B]   [l=10u w=10u h=10u oz=-90]
+
+%beam3d  p1 [B BB] [l=200u w=5u h=2u oz=0]
+%f3d     *  [BB]   [F=60u oz=90]
+
+
+predisplacedbeam3a p1 [B C][l=200u w=5u oz=0 qx=0 qy=0 qz=0 qox=0*180/pi qoy=0*180/pi qoz=.001*180/pi]
+%f3d     *  [C]   [F=100u oz=-90]
+
+
+
+%prestressedbeam   p1 [B C][l=200u w=5u oz=0 qx=qx qy=qy qz=qz qox=qox*180/pi qoy=qoy*180/pi qoz=qoz*180/pi]
+%predisplacedbeam3a p1 [B C][l=200u w=5u oz=0 qx=qx qy=qy qz=qz qox=qox*180/pi qoy=qoy*180/pi qoz=qoz*180/pi]
+
+
+
+%beam3d  p1 [C d] [l=100u w=2u h=2u oz=0]
+%beam3d  p1 [d e] [l=50u w=2u h=2u oz=-90]
+%anchor  p1 [e]   [l=10u w=10u h=10u oz=-90]
+
+%beam3d  p1 [C d] [l=47u w=80u h=2u oz=-90 ox=90]
+%beam3d  p1 [c C] [l=47u w=80u h=2u oz=-90 ox=90]
+%f3d     *  [c]   [F=-2000u oz=0]
+%anchor  p1 [d]   [l=10u w=10u h=10u oz=-90]
+
+
+
+%beam3d  p1 [B CC] [l=200u w=5u h=2u oz=0]
+%prestressedbeam  p1 [B CC][l=200u w=5u oz=0 qx=qx qy=qy qz=qz qox=qox*180/pi qoy=qoy*180/pi qoz=qoz*180/pi]
+
+
+%predisplacedbeam3 p1 [B CCC][l=200u w=5u oz=0 qx=0*qx qy=0*qy qz=0*qz qox=0*qox*180/pi qoy=0*qoy*180/pi qoz=0*qoz*180/pi]
+%prestressedbeam   p1 [B CCC][l=200u w=5u oz=0 qx=-qx qy=-qy qz=-qz qox=-qox*180/pi qoy=-qoy*180/pi qoz=-qoz*180/pi]
+
+
