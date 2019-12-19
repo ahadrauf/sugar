@@ -1,5 +1,6 @@
 function [output] = MF_gap2de_c_original(flag, R, params, q, t, nodes, varargin)
 output = [];
+pause;
 switch(flag)
     case 'vars'
         output.dynamic = {1 {'x' 'y' 'rz' 'e'} ;2 {'x' 'y' 'rz' 'e'} ;3 {'x' 'y' 'rz' 'e'} ;4 {'x' 'y' 'rz' 'e'}};

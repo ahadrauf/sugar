@@ -10,23 +10,23 @@ echo on; clc
 %   Electrical-mechanical analysis of beam gap structure.%
 %##########################################################################
 
-pause % Strike any key to display netlist "beamgap2e.net"; 
+%pause % Strike any key to display netlist "beamgap2e.net"; 
+%
+%type beamgap2e.net
+%
+%pause % Strike any key to display process file "mumps.net"; 
+%
+%type mumps.net
+%
+%pause % Strike any key to load netlist and display the original structure;5
+%
+net = cho_load('cantilever.net');
+%
+%figure;
+%cho_display(net);
 
-type beamgap2e.net
-
-pause % Strike any key to display process file "mumps.net"; 
-
-type mumps.net
-
-pause % Strike any key to load netlist and display the original structure;
-
-net = cho_load('beamgap2e.net');
-
-figure;
-cho_display(net);
-
-pause % Strike any key to continue
-clc
+%pause % Strike any key to continue
+%clc
 
 %########################################################################
 %
@@ -34,13 +34,23 @@ clc
 %
 %#######################################################################
 
-pause % Strike any key to analyze and display deflection at 10V
+%pause % Strike any key to analyze and display deflection at 10V
 
-[dq] = cho_dc(net);
-figure;
-cho_display(net,dq);
-title('Deflected structure at V=10v');
+% [Q] = cho_dc(net);
+net = cho_load('cantilever.net');
+[T,Q] = cho_ta(net,[0 1e-3]);   % Simulate 1 ms behavior 
+dy = cho_dq_view(Q, net, 'tip', 'y'); % Get the y component at c 
+plot(T, dy);    % plot how it moves over t
 
-pause % Strike any key to exit
+%figure;
+%cho_display(net,dq);
+% title('Deflected structure at V=10v');
+
+%pause % Strike any key to exit
 echo off
 disp('End of demo')
+
+% net = cho_load('cantilever.net');
+% [T,Q] = cho_ta(net,[0 1e-3]);   % Simulate 1 ms behavior 
+% dy = cho_dq_view(Q, net, 'tip', 'y'); % Get the y component at c 
+% plot(T, dy);    % plot how it moves over t
