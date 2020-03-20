@@ -1,20 +1,22 @@
 % '////////////////////////////////'
 clear y1 y2 vv v1 v2
 tic
-V1 = 0;
+V1 = 8;
 V2 = 8; 
 i = 0;
 
 %init
 p.V = V1; 
 net = cho_load('net_ucb_contact_1b.m',p);
+% cho_display(net);
 %[T,Q] = cho_ta(net,{0, 1e-3}); % Simulate 1 ms behavior
 %dy = cho_dq_view(Q, net, 'a', 'y'); % Get the y component at c, and
 %plot(T, dy); % plot how it moves over time
 
 %%%%
-%return
 [q] = cho_dc_q(net);
+cho_display(net, q);
+return;
 
 
     

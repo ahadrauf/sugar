@@ -56,10 +56,20 @@ end
 
 %% beam_matrices
 function [M] = beam_matrices(flag, R, params)
-	if (flag == 'M') || (flag == 'D')
-        display('Error: gap2de not yet defined for mass or damping matrices.');
-        output = [];
-    end
+	params.w = params.w1;
+	MB1 = MF_beam2d(flag, R, params);
+
+	params.w = params.w2;
+	MB2 = MF_beam2d(flag, R, params);
+
+	Z = zeros(6);
+
+	M = [MB1    Z;
+		   Z  MB2];
+	%if (flag == 'M') || (flag == 'D')
+    %    display('Error: gap2de not yet defined for mass or damping matrices.');
+    %    output = [];
+    %end
     
 %% compute_forces
 function [output] = compute_forces(F_dFdx, r, params, q_global, t)

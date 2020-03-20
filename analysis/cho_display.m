@@ -18,9 +18,9 @@ zlabel('Z - out of plane  [m]');	%z-axis label.
 
 if nargin == 1
     q = [];
-    disp=0; %PM - to identify disp or no disp case
+    disp_colorbar=0; %PM - to identify disp or no disp case
 else
-    disp=1; %PM - to identify disp or no disp case
+    disp_colorbar=1; %PM - to identify disp or no disp case
 end
 
 %green (in 30s)
@@ -28,14 +28,15 @@ end
 %blue (in 1s)
 %red in 100s
 color0=35;
-color1=0;  
+color1=0;
 color2=90;
 color3=40;
 
 for i = 1 : length(net.elements)
     
     elt = net.elements(i);
-    
+%     disp(i);
+%     disp(isfield(elt.parameter,'layer'));
     if isfield(elt.parameter,'layer')
         switch elt.parameter.layer
             case 'p0'
@@ -63,7 +64,7 @@ for i = 1 : length(net.elements)
         end
     end
     %  eltmodel
-    feval( elt.model, 'display', elt.R, elt.parameter, qlocal, 0, net.nodes(elt.node_ids), color, disp );
+    feval( elt.model, 'display', elt.R, elt.parameter, qlocal, 0, net.nodes(elt.node_ids), color, disp_colorbar );
     
 end
 
@@ -72,7 +73,7 @@ shading interp;
 axis equal;
 axis vis3d;
 
-if disp==1
+if disp_colorbar==1
     colorbar
     title('Total displacement [m]');
 end

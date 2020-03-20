@@ -12,7 +12,7 @@
 %   Displays the beam in a Matlab plot
 
 
-function displaybeam(q_global, Rp, R, L, W, H,color,disp)
+function displaybeam(q_global, Rp, R, L, W, H,color,disp_colorbar)
 
 %By: Jason Vaughn Clark - Oct 1998.
 % Modified by David Bindel, 7/2001
@@ -64,7 +64,7 @@ hz = hermite_cubic(L, z1,-ry1, z2,-ry2, s);
 
 
 % when disp is zero PM
-if disp==1
+if disp_colorbar==1
     x11=0;y11=0;z11=0;rx11=0;ry11=0;rz11=0;
     x22=0;y22=0;z22=0;rx22=0;ry22=0;rz22=0;
     hx1 = x11 + (1 + (x22-x11)/L)*s;
@@ -87,7 +87,7 @@ for corner = 1 : 4
   v(corner,:) = p(2,:) + Rp(2);
   w(corner,:) = p(3,:) + Rp(3);
   
-  if disp==1 %PM
+  if disp_colorbar==1 %PM
       px1 = A(1,corner) + (B(1,corner)-A(1,corner))*s/L + hx1;
       py1 = A(2,corner) + (B(2,corner)-A(2,corner))*s/L + hy1;
       pz1 = A(3,corner) + (B(3,corner)-A(3,corner))*s/L + hz1;
@@ -111,7 +111,7 @@ h=surf(X,Y,Z);
 
 %Diff. b/w current coordinates and coordinates when disp==0, gives the
 %CData index PM
-if disp==1 %Colormap indexed with displacement
+if disp_colorbar==1 %Colormap indexed with displacement
     X1 = [u1(1:4,:); u1(1,:)];
     Y1 = [v1(1:4,:); v1(1,:)];
     Z1 = [w1(1:4,:); w1(1,:)];

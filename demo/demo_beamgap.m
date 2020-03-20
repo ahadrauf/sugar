@@ -37,9 +37,11 @@ net = cho_load('cantilever.net');
 %pause % Strike any key to analyze and display deflection at 10V
 
 % [Q] = cho_dc(net);
-net = cho_load('cantilever.net');
-[T,Q] = cho_ta(net,[0 1e-3]);   % Simulate 1 ms behavior 
-dy = cho_dq_view(Q, net, 'tip', 'y'); % Get the y component at c 
+V = 40;
+p.V = V;
+net = cho_load('beamgap2e.net');
+[T,Q] = cho_ta_regular(net,[0 1e-4]);   % Simulate 1 ms behavior 
+dy = cho_dq_view(Q, net, 'c', 'y'); % Get the y component at c 
 plot(T, dy);    % plot how it moves over t
 
 %figure;

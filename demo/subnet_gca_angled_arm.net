@@ -1,0 +1,88 @@
+% angled arm netlist for simulation of statics of angled arm/shuttle
+% interaction
+% Developed originally by Daniel S. Contreras in 2018, modified by Ahad Rauf in December 2019
+
+% use berkeley SOI process file
+uses SOI_berk.net
+
+% parameters
+% Fy - force on angled arms, oriented in the y-axis
+% Fx - force on shuttle, oriented in the x-axis
+% anchorS - default anchor size
+% Wb - default beam width for suspensions
+% Lb - default beam length for suspensions
+% Ws - default shuttle width for suspensions
+% Ls - default shuttle length for suspensions
+% alpha - rotation of angled arms from the horizontal
+% Larm - length of angled arm
+% warm - width of angled arm
+param Fy=0
+param Fx=0
+param V=0
+param anchorS=10u
+param Wb=0.1u
+param Lb=50u
+param Ws=10u
+param Ls=50u
+param alpha=65*pi/180
+param Larm=100u
+param warm=3u
+
+% define angled-arm subnet
+subnet angledarm [nj pj] [ang=* rot=*]
+[
+	% define suspension
+	beam3d dev [a1 nj] [l=Lb w=Wb oz=rot]
+	beam3d dev [nj a2] [l=Lb w=Wb oz=rot]
+    
+    beam3d   p1 [a2 a3]    [l=100u w=2u h=2u oz=0 Rs=10]
+    gap2de_f    p1 [a3 b c d][l=100u w1=10u w2=5u oz=0 gap=2u Rs=10 R_insulator=100]
+    anchor      p1 [c]      [l=5u w=10u oz=-deg(90)]
+    anchor      p1 [d]      [l=5u w=10u oz=-deg(90)]
+
+	anchor dev [a1] [l=anchorS w=anchorS oz=-pi+rot]
+	anchor dev [a2] [l=anchorS w=anchorS oz=rot]
+	beam3d dev [n2 a7] [l=Lb w=Wb oz=rot]
+	beam3d dev [n2 a8] [l=Lb w=Wb oz=-pi+rot]
+	anchor dev [a7] [l=anchorS w=anchorS oz=rot]
+	anchor dev [a8] [l=anchorS w=anchorS oz=-pi+rot]
+	% define central shuttle angled arm is attached to
+	beam3d dev [nj n2] [l=Ls w=Ws oz=pi/2+rot]
+	% angled arm
+	beam3d dev [nj pj] [l=Larm w=warm oz=ang]
+	% force on angled arm from the y-direction towards the angled arm
+	f3d * [nj] [F=Fy oz=-pi/2+rot]
+
+    Vsrc     *  [a3 g] [V=V]
+    eground  *  [g]   []
+    eground  *  [c]   []
+    eground  *  [d]   []
+]
+
+% call angled arm subnet with parameters
+angledarm dev [n1 p1] [ang=-alpha rot=0]
+angledarm dev [n2 p2] [ang=alpha rot=pi]
+% pinjoint that interfaces the angled arm to the shuttle
+pinjoint dev [p1] [l=1n w=1n oz=-pi/2]
+pinjoint dev [p2] [l=1n w=1n oz=-pi/2]
+% small beams solely meant to connect the pinjoint to the central shuttle
+beam3d dev [p1 nmid] [l=1n w=1n oz=-pi/2]
+beam3d dev [p2 nmid] [l=1n w=1n oz=pi/2]
+
+% central shuttle 1
+beam3d dev [nmid n3] [l=Ls w=Ws oz=-pi]
+% central shuttle suspension 1
+beam3d dev [n3 a3] [l=Lb w=Wb oz=pi/2]
+beam3d dev [n3 a4] [l=Lb w=Wb oz=-pi/2]
+anchor dev [a3] [l=anchorS w=anchorS oz=pi/2]
+anchor dev [a4] [l=anchorS w=anchorS oz=-pi/2]
+% central shuttle 2
+beam3d dev [nmid n4] [l=Ls w=Ws]
+% central shuttle suspension 2
+beam3d dev [n4 a5] [l=Lb w=Wb oz=pi/2]
+beam3d dev [n4 a6] [l=Lb w=Wb oz=-pi/2]
+anchor dev [a5] [l=anchorS w=anchorS oz=pi/2]
+anchor dev [a6] [l=anchorS w=anchorS oz=-pi/2]
+
+% force on the shuttle in the x-direction
+f3d * [nmid] [F=Fx oz=pi]

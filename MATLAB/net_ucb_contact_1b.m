@@ -1,4 +1,5 @@
-% net=cho_load('net_ucb_contact_1a.m');[q]=cho_dc(net);figure(1);cho_display(net,q); q(lookup_coord(net,'B','z'))
+% net=cho_load('net_ucb_contact_1a.m');[q]=cho_dc(net);figure(1);cho_displa
+% y(net,q); q(lookup_coord(net,'B','z'))
 % net=cho_load('net_ucb_contact_1a.m');[q]=cho_dc(net);figure(1);cho_display(net,q);
 % net=cho_load('net_ucb_contact_1a.m');figure(1);cho_display(net);
 
@@ -19,4 +20,3 @@ eground  *  [c]   []
 eground  *  [d]   []
 
 %f2d * [d] [F=100000n oz=-pi/2]
-

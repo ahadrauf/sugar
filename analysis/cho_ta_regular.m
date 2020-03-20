@@ -8,17 +8,22 @@ numvararg=length(varargin); %number of varargs
 T=0; 
 
 % -- Setup system
+global M D K;
 
 M = assemble_system(net, 'M');
 D = assemble_system(net, 'D');
 K = assemble_system(net, 'K');
 k = length(K);
 [l,u,p]=lu(M);
-ip=inv(p);
-il=inv(l);
-iu=inv(u);
-invMD=M\D;
-invMK=M\K;
+ip=pinv(p);
+il=pinv(l);
+iu=pinv(u);
+invMD=pinv(D)*M;%M\D;
+invMK=pinv(K)*M;%M\K;
+%disp(M);
+%disp(D);
+%disp(K);
+%return;
 
 % -- Set initial conditions
 

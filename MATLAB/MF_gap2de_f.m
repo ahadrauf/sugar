@@ -1,6 +1,5 @@
 function [output] = MF_gap2de_c_original(flag, R, params, q, t, nodes, varargin)
 output = [];
-pause;
 switch(flag)
     case 'vars'
         output.dynamic = {1 {'x' 'y' 'rz' 'e'} ;2 {'x' 'y' 'rz' 'e'} ;3 {'x' 'y' 'rz' 'e'} ;4 {'x' 'y' 'rz' 'e'}};
@@ -127,7 +126,7 @@ function GapDisplay(R, params, q, nodes, varargin)
     q1([1 2 6 7 8 12]) = [q(1:3);q(5:7)];
     displaybeam(q1, nodes(1).pos, R, params.l, params.w1, params.h,  0,1);
     q2([1 2 6 7 8 12]) = [q(9:11);q(13:15)];
+%     disp("q1 and q2");
+%     disp(q1);
+%     disp(q2);
     displaybeam(q2, nodes(3).pos,R, params.l, params.w2, params.h,  0,1);
-
-    
-    

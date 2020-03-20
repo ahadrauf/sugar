@@ -9,10 +9,10 @@ param V
 Vsrc     *  [A G] [V=V]
 eground  *  [G]   []
 left_anchor anchor   p1 [A]   [l=5u w=10u  oz=deg(180)]
-left_suspension_beam beam2de  p1 [A b] [l=100u w=5u h=40u oz=0 R=100]
-gca gap2de   p1 [b c D E] [l=100u w1=5u w2=5u oz=0 gap=4.834u R1=100 R2=100 Rs=10 R_insulator=100]
+left_suspension_beam beam2de  p1 [A b] [l=10u w=4u h=40u oz=0 R=100]
+gca gap2de   p1 [b c D E] [l=50u w1=4u w2=4u oz=0 gap=4.834u R1=100 R2=100 Rs=10 R_insulator=100 V=V h=40u]
 
-right_suspension_beam beam2de  p1 [E F] [l=100u w=5u h=40u oz=0 R=100]
+right_suspension_beam beam2de  p1 [E F] [l=10u w=4u h=40u oz=0 R=100]
 eground  *  [F]   []
 right_anchor anchor   p1 [F]  [l=5u w=10u oz=deg(0)]
 

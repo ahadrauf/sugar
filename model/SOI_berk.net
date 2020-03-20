@@ -17,7 +17,7 @@ process p1 : poly = [
     h = 40e-6			%Layer height of mcnc poly1 = 2e-6 meters
 ]
 
-process p2 : poly = [
+process ox : poly = [
     h = 1.5e-6			%Layer height of mcnc poly2 = 1.5e-6 meters
 ]
 

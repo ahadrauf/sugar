@@ -4,9 +4,7 @@
 uses mumps.net
 uses stdlib.net
 
-param V
-
-Vsrc     *  [A f] [V=V]
+Vsrc     *  [A f] [V=40]
 eground  *  [f]   []
 anchor   p1 [A]   [l=5u w=10u  oz=deg(180)]
 beam2de  p1 [A b] [l=100u w=2u h=2u oz=0 R=100]

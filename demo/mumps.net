@@ -19,12 +19,12 @@ process p0 : poly = [
 ]
 
 process p1 : poly = [ 
-    h = 2e-6			%Layer height of SOI MUMPS = 25e-6 meters
+    h = 550e-6			%Layer height of SOI MUMPS = 25e-6 meters
     layer='p1'
 ]
 
 process p2 : poly = [
-    h = 1.5e-6			%Layer height of mcnc poly2 = 1.5e-6 meters
+    h = 2e-6			%Layer height of mcnc poly2 = 1.5e-6 meters
     layer='p2'
 ]
 

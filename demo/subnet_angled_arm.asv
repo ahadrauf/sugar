@@ -1,0 +1,123 @@
+% angled arm netlist for simulation of statics of angled arm/shuttle interaction
+% p1eloped originally by Daniel S. Contreras in 2018, modified by Ahad Rauf in December 2019
+ 
+% use berkeley SOI process file
+uses mumps.net
+ 
+% parameters
+% Fy - force on angled arms, oriented in the y-axis
+% Fx - force on shuttle, oriented in the x-axis
+% anchorS - default anchor size
+% Wb - default beam width for suspensions
+% Lb - default beam length for suspensions
+% Ws - default shuttle width for suspensions
+% Ls - default shuttle length for suspensions
+% alpha - rotation of angled arms from the horizontal
+% Larm - length of angled arm
+% warm - width of angled arm
+param Fy=0
+param Fx=0
+param anchorS=10u
+param Wb=0.1u
+param Lb=50u
+param Ws=34u
+param Ls=50u
+param alpha=65*pi/180
+param Larm=125.98u
+param warm=3u
+param V=0
+
+% define angled-arm subnet
+% pj = end of angled arm (pawl) that makes contact with main shuttle
+% nj = end of angled arm (pawl) that is closer to the GCA's
+% shaft_end = end of GCA side shuttle
+subnet angledarm [nj pj shaft_end] [ang=* rot=* N=* flip_anchor=0]
+[
+    % define the gap stop point
+    shuttle_start beam2de_b p1 [nj shaft_gap_stop] [l=68.833u w=20u oz=pi/2+rot Rs=10]
+
+    % define central shuttle angled arm is attached to
+    shuttle(1) beam2de_b p1 [shaft_gap_stop shaft(1)] [l=121.857u w=20u oz=pi/2+rot Rs=10]
+    for k=1:N [
+        shuttle(k) beam2de_b p1 [shaft(k) shaft(k+1)] [l=22.595u w=20u oz=pi/2+rot Rs=10]
+        
+        shuttle_to_finger_right(k) beam2de_b p1 [shaft(k+1) gca_shaft_attachment_node_right(k+1)] [l=20u w=5.005u-0.96u oz=rot Rs=10]
+        shuttle_to_finger_left(k) beam2de_b p1 [shaft(k+1) gca_shaft_attachment_node_left(k+1)] [l=20u w=5.005u-0.96u oz=pi+rot Rs=10]
+        
+        gca_right(k) gap2de_f p1 [gca_shaft_attachment_node_right(k+1) gca_shaft_finger_end_right(k+1) gca_anchor_finger_end_right(k+1) gca_anchor_attachment_node_right(k+1)] [l=76.472u w1=5.005u w2=5.005u-0.96u oz=rot gap=4.834u R1=100 R2=100 Rs=10 R_insulator=100 V=V h=550u]
+        gca_left(k) gap2de_f p1 [gca_anchor_finger_end_left(k+1) gca_anchor_attachment_node_left(k+1) gca_shaft_attachment_node_left(k+1) gca_shaft_finger_end_left(k+1)] [l=76.472u w1=5.005u w2=5.005u-0.96u oz=rot+pi gap=4.834u R1=100 R2=100 Rs=10 R_insulator=100 V=V h=550u]
+        
+        anchor_to_finger_right(k) beam2de_b p1 [gca_anchor_attachment_node_right(k+1) gca_anchor_node_right(k+1)] [l=13u w=5.005u-0.96u oz=rot Rs=10]
+        anchor_to_finger_left(k) beam2de_b p1 [gca_anchor_attachment_node_left(k+1) gca_anchor_node_left(k+1)] [l=13u w=5.005u-0.96u oz=pi+rot Rs=10]
+        
+        gca_anchor_right(k) anchor p1 [gca_anchor_node_right(k+1)] [l=4u w=6u oz=rot]
+        gca_anchor_left(k) anchor p1 [gca_anchor_node_left(k+1)] [l=4u w=6u oz=rot+pi]
+        eground  *  [gca_anchor_node_right(k+1)]   []
+        eground  *  [gca_anchor_node_left(k+1)]   []
+    ]
+    shuttle(N+1) beam2de_b p1 [shaft(N+1) shaft_end] [l=61.595u w=20u oz=pi/2+rot Rs=10]
+    
+    % define suspension closest to angled arm
+    % beam2de_b p1 [a1 nj] [l=Lb w=Wb oz=rot]
+    beam2de_b p1 [nj a2] [l=152.8u w=3u oz=rot-pi*flip_anchor Rs=10]
+    % anchor p1 [a1] [l=anchorS w=anchorS oz=-pi+rot]
+    anchor p1 [a2] [l=anchorS w=anchorS oz=rot-pi*flip_anchor]
+ 
+    % define suspension farthest from angled arm
+    beam2de_b p1 [shaft_end a7] [l=152.8u w=3u oz=rot-pi*flip_anchor Rs=10]
+    % beam2de_b p1 [n2 a8] [l=Lb w=Wb oz=-pi+rot]
+    anchor p1 [a7] [l=anchorS w=anchorS oz=rot-pi*flip_anchor]
+    % anchor p1 [a8] [l=anchorS w=anchorS oz=-pi+rot]
+    
+    % angled arm
+    beam2de_b p1 [nj pj] [l=Larm w=warm oz=ang Rs=10]d
+    
+    % define gap stop
+    gap_stop_shuttle_left beam2de_b p1 [shaft_gap_stop_left shaft_gap_stop] [l=130u w=10u oz=rot Rs=10]
+    gap_stop_shuttle_right beam2de_b p1 [shaft_gap_stop shaft_gap_stop_right] [l=130u w=10u oz=rot Rs=10]
+    gap_stop_left anchor p1 [gap_stop_left_anchor] [l=50u w=50u oz=rot]
+    gap_stop_right anchor p1 [gap_stop_right_anchor] [l=50u w=50u oz=rot]
+    % a weak connecting spring between the gap stop and anchor
+    gap_stop_suspension_left(1) beam2de_b p1 [shaft_gap_stop_left gap_stop_suspension_point(1)] [l=100u w=1n oz=rot Rs=10]
+    gap_stop_suspension_left(2) beam2de_b p1 [shaft_gap_stop_left gap_stop_suspension_point(1)] [l=100u w=1n oz=rot Rs=10]
+    gap_stop_suspension_left(3) beam2de_b p1 [shaft_gap_stop_left gap_stop_suspension_point(1)] [l=100u w=1n oz=rot Rs=10]
+    
+    % force on angled arm from the y-direction towards the angled arm
+    % f3d * [nj] [F=Fy oz=-pi/2+rot]
+]
+ 
+% call angled arm subnet with parameters
+angledarm p1 [n1 p1 shaft_end1] [ang=-alpha rot=0 N=2 flip_anchor=1]
+angledarm p1 [n2 p2 shaft_end2] [ang=alpha rot=pi N=2]
+% pinjoint that interfaces the angled arm to the shuttle
+pinjoint p1 [p1] [l=1n w=1n oz=-pi/2]
+pinjoint p1 [p2] [l=1n w=1n oz=-pi/2]
+ 
+% small beams solely meant to connect the pinjoint to the central shuttle
+beam2de_b p1 [p1 nmid] [l=1n w=1n oz=-pi/2 Rs=10]
+beam2de_b p1 [p2 nmid] [l=1n w=1n oz=pi/2 Rs=10]
+
+
+% central shuttle 1
+beam2de_b p1 [nmid n3] [l=Ls w=Ws oz=-pi Rs=10]
+% central shuttle suspension 1
+beam2de_b p1 [n3 a3] [l=Lb w=Wb oz=pi/2 Rs=10]
+beam2de_b p1 [n3 a4] [l=Lb w=Wb oz=-pi/2 Rs=10]
+anchor p1 [a3] [l=anchorS w=anchorS oz=pi/2 Rs=10]
+anchor p1 [a4] [l=anchorS w=anchorS oz=-pi/2]
+% central shuttle 2
+beam2de_b p1 [nmid n4] [l=Ls w=Ws Rs=10 oz=0]
+% central shuttle suspension 2
+beam2de_b p1 [n4 a5] [l=Lb w=Wb oz=pi/2 Rs=10]
+beam2de_b p1 [n4 a6] [l=Lb w=Wb oz=-pi/2 Rs=10]
+anchor p1 [a5] [l=anchorS w=anchorS oz=pi/2]
+anchor p1 [a6] [l=anchorS w=anchorS oz=-pi/2]
+ 
+% force on the shuttle in the x-direction
+f3d * [nmid] [F=Fx oz=pi]
+
+Vsrc     *  [shaft_end1 gnd] [V=V]
+Vsrc     *  [shaft_end2 gnd] [V=V]
+eground  *  [gnd]   []
+% eground  *  [c]   []
+% eground  *  [d]   []

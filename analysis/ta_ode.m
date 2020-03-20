@@ -32,12 +32,12 @@ elseif strcmp(flag, 'jacobian')
 else
    
   F = assemble_F(net, d2.*q, t);
-%   D1F = d1(1:length(F)).*F;  % Giving errors - changed by Ahad on
+  D1F = d1(1:length(F)).*F;  % Giving errors - changed by Ahad on
 %   12/18/19
-  D1F = d1(1:length(F), 1:length(F))*F;
+%   D1F = d1(1:length(F), 1:length(F))*F;
   
   qdot = -G*q;
-  qdot(1:length(D1F)) = qdot(1:length(D1F)) + D1F;
+  qdot(1:length(D1F)) = qdot(1:length(D1F)) + D1F(1:length(D1F))';
   
 end
 
